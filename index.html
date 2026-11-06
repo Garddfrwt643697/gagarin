@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gagarin Gastro Bar | Новый Год</title>
     <style>
-        /* Базовые стили для мобилки */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(180deg, #0b1a2e 0%, #1a2f4a 40%, #2a4a6a 100%);
+            background: #2a2a2a; /* Тёмно-серый фон */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -19,85 +18,132 @@
             color: #fff;
         }
 
-        /* --- ГИРЛЯНДА ВОКРУГ ЛОГО (имитация) --- */
-        .garland-wrap {
-            position: relative;
-            margin-top: 40px;
-            display: inline-block;
-        }
-        .garland {
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 280px;
-            height: 30px;
-            pointer-events: none;
-            z-index: 10;
-        }
-        .garland .light {
-            position: absolute;
-            width: 10px;
-            height: 14px;
-            border-radius: 50%;
-            background: #ff3333;
-            box-shadow: 0 0 10px #ff3333, 0 0 20px #ff3333;
-            animation: flicker 1.5s infinite alternate;
-        }
-        /* Позиционируем огоньки по дуге */
-        .garland .light:nth-child(1) { left: 0%; top: 20px; animation-delay: 0s; background: #ff3333; box-shadow: 0 0 10px #ff3333; }
-        .garland .light:nth-child(2) { left: 12%; top: 5px; animation-delay: 0.2s; background: #33cc33; box-shadow: 0 0 10px #33cc33; }
-        .garland .light:nth-child(3) { left: 25%; top: 0px; animation-delay: 0.4s; background: #3366ff; box-shadow: 0 0 10px #3366ff; }
-        .garland .light:nth-child(4) { left: 38%; top: -3px; animation-delay: 0.6s; background: #ffff33; box-shadow: 0 0 10px #ffff33; }
-        .garland .light:nth-child(5) { left: 50%; top: -5px; animation-delay: 0.8s; background: #ff3333; box-shadow: 0 0 10px #ff3333; }
-        .garland .light:nth-child(6) { left: 62%; top: -3px; animation-delay: 1.0s; background: #33cc33; box-shadow: 0 0 10px #33cc33; }
-        .garland .light:nth-child(7) { left: 75%; top: 0px; animation-delay: 1.2s; background: #3366ff; box-shadow: 0 0 10px #3366ff; }
-        .garland .light:nth-child(8) { left: 88%; top: 5px; animation-delay: 1.4s; background: #ffff33; box-shadow: 0 0 10px #ffff33; }
-        .garland .light:nth-child(9) { left: 100%; top: 20px; animation-delay: 1.6s; background: #ff3333; box-shadow: 0 0 10px #ff3333; }
-
-        @keyframes flicker {
-            0% { opacity: 0.4; transform: scale(0.9); }
-            100% { opacity: 1; transform: scale(1.1); }
-        }
-
-        /* Логотип (заглушка, замени на свой img) */
-        .logo-container {
-            width: 220px;
-            height: 220px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            border: 3px solid rgba(255,255,255,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            z-index: 5;
-            backdrop-filter: blur(5px);
-            margin: 0 auto;
-        }
-        .logo-container img {
-            width: 180px;
-            height: auto;
-            border-radius: 50%;
-        }
-        .logo-placeholder-text {
-            font-size: 18px;
-            font-weight: bold;
-            text-align: center;
-            color: #fff;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-        }
-
-        /* --- ПАДАЮЩИЙ СНЕГ (CSS) --- */
-        .snow-container {
+        /* --- МИШУРА ПО БОКАМ (фиксированная) --- */
+        .tinsel-left, .tinsel-right {
             position: fixed;
             top: 0;
-            left: 0;
+            bottom: 0;
+            width: 40px;
+            z-index: 15;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                180deg,
+                #ff3333 0px, #ff3333 15px,
+                #33cc33 15px, #33cc33 30px,
+                #ffff33 30px, #ffff33 45px,
+                #3366ff 45px, #3366ff 60px,
+                #ff3333 60px, #ff3333 75px
+            );
+            opacity: 0.85;
+            border-radius: 0 10px 10px 0;
+            box-shadow: 2px 0 10px rgba(255,255,255,0.3);
+        }
+        .tinsel-left { left: 0; }
+        .tinsel-right {
+            right: 0;
+            border-radius: 10px 0 0 10px;
+            box-shadow: -2px 0 10px rgba(255,255,255,0.3);
+        }
+        /* Добавляем "пушистость" мишуре через псевдоэлементы (шарики) */
+        .tinsel-left::before, .tinsel-right::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: radial-gradient(circle, #fff 2px, transparent 2px);
+            background-size: 15px 25px;
+            opacity: 0.6;
+        }
+
+        /* --- ЛОГОТИП --- */
+        .logo-wrap {
+            position: relative;
+            margin-top: 50px;
+            z-index: 10;
+            width: 220px;
+            height: 220px;
+        }
+        .logo-img {
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            overflow: hidden;
+            object-fit: cover;
+            border-radius: 30px; /* Закруглённые углы */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+            z-index: 2;
+        }
+        /* Леденцы по углам */
+        .candy {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: repeating-conic-gradient(#ff3333 0deg 30deg, #fff 30deg 60deg);
+            border: 3px solid #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            z-index: 3;
+        }
+        .candy.tl { top: -15px; left: -15px; }
+        .candy.tr { top: -15px; right: -15px; }
+        .candy.bl { bottom: -15px; left: -15px; }
+        .candy.br { bottom: -15px; right: -15px; }
+        /* Палочка от леденца */
+        .candy::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 20px;
+            background: #e0e0e0;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 3px;
+        }
+        .candy.tr::after, .candy.br::after { display: none; } /* Палочки только у левых для красоты */
+
+        /* --- КОНТЕНТ --- */
+        .content {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 380px;
+            padding: 30px 20px 200px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+        }
+
+        /* --- БЕЛЫЕ КНОПКИ С ОБВОДКОЙ --- */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px 20px;
+            border-radius: 50px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            color: #2a2a2a; /* Тёмный текст на белом */
+            background: #ffffff;
+            border: 3px solid transparent;
+            background-clip: padding-box;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4), 0 0 0 3px #d4af37; /* Золотая обводка */
+            position: relative;
+        }
+        .btn:active { transform: scale(0.97); }
+
+        /* Разные цвета обводки для кнопок (чтобы не сливались) */
+        .btn-yandex { box-shadow: 0 4px 15px rgba(0,0,0,0.4), 0 0 0 3px #fc3f1d; }
+        .btn-2gis { box-shadow: 0 4px 15px rgba(0,0,0,0.4), 0 0 0 3px #2b9e4b; }
+        .btn-menu { box-shadow: 0 4px 15px rgba(0,0,0,0.4), 0 0 0 3px #ffb347; }
+
+        /* --- СНЕГ (CSS) --- */
+        .snow-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 1; overflow: hidden;
         }
         .snowflake {
             position: absolute;
@@ -109,336 +155,87 @@
             animation-timing-function: linear;
             animation-iteration-count: infinite;
         }
-        @keyframes fall {
-            to { transform: translateY(105vh); }
-        }
-
-        /* --- КОНТЕНТ --- */
-        .content {
-            position: relative;
-            z-index: 10;
-            width: 100%;
-            max-width: 400px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            margin-top: 10px;
-            padding-bottom: 180px; /* место для сугробов */
-        }
-
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 16px 20px;
-            border-radius: 50px;
-            text-align: center;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 16px;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            position: relative;
-            overflow: hidden;
-        }
-        .btn:active { transform: scale(0.97); }
-
-        .btn-yandex {
-            background: linear-gradient(135deg, #fc3f1d, #d42e0f);
-        }
-        .btn-2gis {
-            background: linear-gradient(135deg, #2b9e4b, #1e7a36);
-        }
-        .btn-menu {
-            background: linear-gradient(135deg, #ffb347, #e6952b);
-            color: #1a1a1a;
-        }
-
-        /* --- МОДАЛЬНОЕ ОКНО МЕНЮ --- */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .modal-overlay.active {
-            display: flex;
-        }
-        .modal-content {
-            background: #fff;
-            color: #333;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 350px;
-            max-height: 80vh;
-            overflow-y: auto;
-            padding: 20px;
-            position: relative;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            animation: slideUp 0.3s ease;
-        }
-        @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        .modal-close {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 28px;
-            font-weight: bold;
-            color: #999;
-            background: none;
-            border: none;
-            cursor: pointer;
-            line-height: 1;
-        }
-        .modal-close:hover { color: #333; }
-        .modal-content h2 {
-            text-align: center;
-            margin-bottom: 15px;
-            font-size: 20px;
-            color: #1a2f4a;
-        }
-        .menu-category {
-            margin-bottom: 15px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
-        .menu-category h3 {
-            font-size: 16px;
-            color: #d42e0f;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-        }
-        .menu-item {
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            margin-bottom: 6px;
-            color: #444;
-        }
-        .menu-item .price {
-            font-weight: bold;
-            color: #1a2f4a;
-            white-space: nowrap;
-            margin-left: 10px;
-        }
+        @keyframes fall { to { transform: translateY(105vh); } }
 
         /* --- СУГРОБЫ И СНЕГОВИК (внизу) --- */
         .snow-bottom {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 150px;
-            pointer-events: none;
-            z-index: 20;
+            bottom: 0; left: 0; width: 100%; height: 160px;
+            pointer-events: none; z-index: 20;
         }
         .snow-drift {
             position: absolute;
-            bottom: 0;
-            width: 120%;
-            height: 80px;
+            bottom: 0; width: 120%; height: 90px;
             background: #fff;
             border-radius: 50% 50% 0 0 / 100% 100% 0 0;
             left: -10%;
-            box-shadow: 0 -5px 20px rgba(255,255,255,0.3);
+            box-shadow: 0 -5px 20px rgba(255,255,255,0.4);
         }
         .snow-drift.back {
-            height: 60px;
-            background: #e0e8f0;
-            bottom: 20px;
+            height: 70px; background: #e0e8f0; bottom: 25px;
             border-radius: 40% 40% 0 0 / 100% 100% 0 0;
-            left: -20%;
-            width: 140%;
-            z-index: -1;
+            left: -20%; width: 140%; z-index: -1;
         }
-        /* Снеговик (CSS) */
-        .snowman {
+        /* Гифка снеговика */
+        .snowman-gif {
             position: absolute;
-            bottom: 40px;
+            bottom: 50px;
             right: 30px;
-            width: 60px;
-            height: 80px;
+            width: 70px;
+            height: auto;
             z-index: 21;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3));
         }
-        .snowman .head {
-            width: 40px; height: 40px;
-            background: #fff;
-            border-radius: 50%;
-            position: absolute;
-            top: 0; left: 10px;
-            border: 2px solid #ccc;
-        }
-        .snowman .body {
-            width: 55px; height: 55px;
-            background: #fff;
-            border-radius: 50%;
-            position: absolute;
-            bottom: 0; left: 2.5px;
-            border: 2px solid #ccc;
-        }
-        .snowman .eye {
-            width: 6px; height: 6px;
-            background: #333;
-            border-radius: 50%;
-            position: absolute;
-            top: 12px;
-        }
-        .snowman .eye.left { left: 10px; }
-        .snowman .eye.right { left: 24px; }
-        .snowman .nose {
-            width: 10px; height: 10px;
-            background: #ff6600;
-            border-radius: 50%;
-            position: absolute;
-            top: 20px; left: 15px;
-        }
-        .snowman .hat {
-            width: 30px; height: 15px;
-            background: #d42e0f;
-            position: absolute;
-            top: -8px; left: 5px;
-            border-radius: 5px 5px 0 0;
-        }
-        .snowman .scarf {
-            width: 30px; height: 8px;
-            background: #2b9e4b;
-            position: absolute;
-            top: 38px; left: 5px;
-            border-radius: 5px;
-        }
+
     </style>
 </head>
 <body>
 
-    <!-- Гирлянда и лого -->
-    <div class="garland-wrap">
-        <div class="garland">
-            <div class="light"></div><div class="light"></div><div class="light"></div>
-            <div class="light"></div><div class="light"></div><div class="light"></div>
-            <div class="light"></div><div class="light"></div><div class="light"></div>
-        </div>
-        <div class="logo-container">
-            <!-- ЗАМЕНИ ЭТОТ БЛОК НА СВОЙ ЛОГОТИП -->
-            <!-- <img src="logo.png" alt="Gagarin"> -->
-            <div class="logo-placeholder-text">GAGARIN<br>GASTRO BAR</div>
-        </div>
+    <!-- Мишура по бокам -->
+    <div class="tinsel-left"></div>
+    <div class="tinsel-right"></div>
+
+    <!-- Логотип с леденцами -->
+    <div class="logo-wrap">
+        <img src="logo.png" alt="Gagarin Gastro Bar" class="logo-img">
+        <div class="candy tl"></div>
+        <div class="candy tr"></div>
+        <div class="candy bl"></div>
+        <div class="candy br"></div>
     </div>
 
-    <!-- Контент с кнопками -->
+    <!-- Кнопки -->
     <div class="content">
         <a href="https://yandex.ru/maps/org/gagarin_gastro_bar/37738191246/?ll=39.837713%2C59.196859&z=17" target="_blank" class="btn btn-yandex">⭐ Оставить отзыв в Яндекс Картах</a>
         <a href="https://go.2gis.com/1yZ9V" target="_blank" class="btn btn-2gis">⭐ Оставить отзыв в 2ГИС</a>
-        <button onclick="openMenu()" class="btn btn-menu">🍽️ Смотреть онлайн-меню</button>
+        <a href="https://foodeon.com/venue/gagarin-gastro-bar-slqs" target="_blank" class="btn btn-menu">🍽️ Смотреть онлайн-меню</a>
     </div>
 
     <!-- Снег -->
     <div class="snow-container" id="snowContainer"></div>
 
-    <!-- Сугробы и снеговик -->
+    <!-- Сугробы и снеговик-гифка -->
     <div class="snow-bottom">
         <div class="snow-drift back"></div>
         <div class="snow-drift"></div>
-        <div class="snowman">
-            <div class="hat"></div>
-            <div class="head">
-                <div class="eye left"></div>
-                <div class="eye right"></div>
-                <div class="nose"></div>
-            </div>
-            <div class="body"></div>
-            <div class="scarf"></div>
-        </div>
-    </div>
-
-    <!-- Модальное окно меню -->
-    <div class="modal-overlay" id="menuModal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeMenu()">&times;</button>
-            <h2>Меню Gagarin</h2>
-            
-            <div class="menu-category">
-                <h3>Супы</h3>
-                <div class="menu-item"><span>Суп Том ям с рисом</span><span class="price">550 ₽</span></div>
-                <div class="menu-item"><span>Крем-суп из тыквы с креветками</span><span class="price">480 ₽</span></div>
-                <div class="menu-item"><span>Борщ с салом и пампушкой</span><span class="price">470 ₽</span></div>
-            </div>
-
-            <div class="menu-category">
-                <h3>Салаты</h3>
-                <div class="menu-item"><span>Цезарь с курицей</span><span class="price">490 ₽</span></div>
-                <div class="menu-item"><span>Цезарь с креветками</span><span class="price">590 ₽</span></div>
-                <div class="menu-item"><span>Теплый салат с курицей и беконом</span><span class="price">460 ₽</span></div>
-            </div>
-
-            <div class="menu-category">
-                <h3>Горячее</h3>
-                <div class="menu-item"><span>Говяжьи ребра со свежими овощами</span><span class="price">830 ₽</span></div>
-                <div class="menu-item"><span>Хачапури с креветками и соусом том ям</span><span class="price">630 ₽</span></div>
-                <div class="menu-item"><span>Копченый стейк из свиной шеи</span><span class="price">790 ₽</span></div>
-            </div>
-
-            <div class="menu-category">
-                <h3>Пицца</h3>
-                <div class="menu-item"><span>Фирменная с морепродуктами</span><span class="price">840 ₽</span></div>
-                <div class="menu-item"><span>Пепперони</span><span class="price">620 ₽</span></div>
-                <div class="menu-item"><span>Маргарита</span><span class="price">640 ₽</span></div>
-            </div>
-            
-            <div class="menu-category">
-                <h3>Десерты</h3>
-                <div class="menu-item"><span>Медовик с халвой</span><span class="price">440 ₽</span></div>
-                <div class="menu-item"><span>Меренговый рулет с нектарином</span><span class="price">390 ₽</span></div>
-            </div>
-        </div>
+        <img src="snowman.gif" alt="Снеговик" class="snowman-gif">
     </div>
 
     <script>
         // --- Генерация снега ---
         const snowContainer = document.getElementById('snowContainer');
-        const snowflakeCount = 50; // Количество снежинок
-
+        const snowflakeCount = 50;
         for (let i = 0; i < snowflakeCount; i++) {
             const flake = document.createElement('div');
             flake.classList.add('snowflake');
-            flake.innerHTML = '❄'; // Символ снежинки
+            flake.innerHTML = '❄';
             flake.style.left = Math.random() * 100 + '%';
-            flake.style.animationDuration = (Math.random() * 3 + 4) + 's'; // от 4 до 7 секунд
+            flake.style.animationDuration = (Math.random() * 3 + 4) + 's';
             flake.style.animationDelay = Math.random() * 5 + 's';
             flake.style.fontSize = (Math.random() * 0.8 + 0.5) + 'em';
             flake.style.opacity = Math.random() * 0.5 + 0.4;
             snowContainer.appendChild(flake);
         }
-
-        // --- Модальное окно ---
-        const modal = document.getElementById('menuModal');
-
-        function openMenu() {
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Блокируем скролл фона
-        }
-
-        function closeMenu() {
-            modal.classList.remove('active');
-            document.body.style.overflow = ''; // Возвращаем скролл
-        }
-
-        // Закрытие по клику вне окна
-        modal.addEventListener('click', function(e) {
-            if (e.target === modal) {
-                closeMenu();
-            }
-        });
     </script>
 </body>
 </html>
