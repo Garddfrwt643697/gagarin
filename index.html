@@ -6,9 +6,9 @@
     <title>Gagarin Gastro Bar | Новый Год</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: #2a2a2a; /* Тёмно-серый фон */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -16,226 +16,275 @@
             overflow-x: hidden;
             position: relative;
             color: #fff;
+            background: #1a1a1a;
         }
 
-        /* --- МИШУРА ПО БОКАМ (фиксированная) --- */
-        .tinsel-left, .tinsel-right {
+        /* --- ФОН fon.jpg с блюром --- */
+        .bg-layer {
             position: fixed;
-            top: 0;
-            bottom: 0;
-            width: 40px;
-            z-index: 15;
-            pointer-events: none;
-            background: repeating-linear-gradient(
-                180deg,
-                #ff3333 0px, #ff3333 15px,
-                #33cc33 15px, #33cc33 30px,
-                #ffff33 30px, #ffff33 45px,
-                #3366ff 45px, #3366ff 60px,
-                #ff3333 60px, #ff3333 75px
-            );
-            opacity: 0.85;
-            border-radius: 0 10px 10px 0;
-            box-shadow: 2px 0 10px rgba(255,255,255,0.3);
-        }
-        .tinsel-left { left: 0; }
-        .tinsel-right {
-            right: 0;
-            border-radius: 10px 0 0 10px;
-            box-shadow: -2px 0 10px rgba(255,255,255,0.3);
-        }
-        /* Добавляем "пушистость" мишуре через псевдоэлементы (шарики) */
-        .tinsel-left::before, .tinsel-right::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: radial-gradient(circle, #fff 2px, transparent 2px);
-            background-size: 15px 25px;
-            opacity: 0.6;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: url('fon.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: blur(3px) brightness(0.6);
+            z-index: 0;
+            transform: scale(1.05); /* чтобы блюр не давал белых краев */
         }
 
-        /* --- ЛОГОТИП --- */
-        .logo-wrap {
-            position: relative;
-            margin-top: 50px;
-            z-index: 10;
-            width: 220px;
-            height: 220px;
-        }
-        .logo-img {
+        /* --- ШАПКА shapka.jpg --- */
+        .shapka {
+            position: fixed;
+            top: 0; left: 0;
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 30px; /* Закруглённые углы */
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            position: relative;
-            z-index: 2;
+            height: auto;
+            z-index: 5;
+            pointer-events: none;
         }
-        /* Леденцы по углам */
-        .candy {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: repeating-conic-gradient(#ff3333 0deg 30deg, #fff 30deg 60deg);
-            border: 3px solid #fff;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-            z-index: 3;
+        .shapka img {
+            width: 100%;
+            display: block;
         }
-        .candy.tl { top: -15px; left: -15px; }
-        .candy.tr { top: -15px; right: -15px; }
-        .candy.bl { bottom: -15px; left: -15px; }
-        .candy.br { bottom: -15px; right: -15px; }
-        /* Палочка от леденца */
-        .candy::after {
-            content: '';
-            position: absolute;
-            width: 6px;
-            height: 20px;
-            background: #e0e0e0;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 3px;
-        }
-        .candy.tr::after, .candy.br::after { display: none; } /* Палочки только у левых для красоты */
 
         /* --- КОНТЕНТ --- */
-        .content {
+        .main-content {
             position: relative;
             z-index: 10;
             width: 100%;
             max-width: 380px;
-            padding: 30px 20px 200px 20px;
+            padding: 0 20px 250px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 18px;
+            margin-top: 100px; /* отступ под шапку */
         }
 
-        /* --- БЕЛЫЕ КНОПКИ С ОБВОДКОЙ --- */
+        /* --- БЛОК С ЛОГО И МИШУРОЙ --- */
+        .logo-section {
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+            padding-top: 40px; /* место для гифок сверху */
+        }
+
+        /* Мишура вокруг лого (gif) — растягиваем под ширину лого */
+        .mishura {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110%;
+            height: auto;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        /* Гирлянда (gif) — под мишурой, с навесом на лого */
+        .girlyanda {
+            position: absolute;
+            top: 15px; /* чуть ниже мишуры, чтобы «нависала» */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120%;
+            height: auto;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Сам логотип */
+        .logo-img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+            position: relative;
+            z-index: 4;
+            border: 4px solid rgba(255,255,255,0.8);
+            box-shadow: 0 0 30px rgba(255,215,0,0.6);
+        }
+
+        /* Адрес и телефон */
+        .info-block {
+            text-align: center;
+            z-index: 10;
+            margin-bottom: 25px;
+            background: rgba(0,0,0,0.4);
+            padding: 8px 15px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+        }
+        .info-block p {
+            font-size: 13px;
+            margin: 3px 0;
+            color: #fff;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+        .info-block a {
+            color: #ffd700;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* --- КНОПКИ С RGB ПОДСВЕТКОЙ --- */
         .btn {
             display: block;
-            width: 100%;
-            padding: 16px 20px;
-            border-radius: 50px;
+            width: 85%;
+            max-width: 300px;
+            padding: 12px 15px;
+            border-radius: 40px;
             text-align: center;
             text-decoration: none;
             font-weight: bold;
-            font-size: 16px;
-            color: #2a2a2a; /* Тёмный текст на белом */
+            font-size: 14px;
+            color: #1a1a1a;
             background: #ffffff;
-            border: 3px solid transparent;
-            background-clip: padding-box;
+            border: none;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4), 0 0 0 3px #d4af37; /* Золотая обводка */
+            margin-bottom: 12px;
             position: relative;
+            z-index: 10;
+            box-shadow: 0 0 10px rgba(255,255,255,0.3);
+            transition: transform 0.2s;
+            /* Анимация RGB-обводки */
+            animation: rgbGlow 4s linear infinite;
         }
-        .btn:active { transform: scale(0.97); }
+        .btn:active { transform: scale(0.96); }
 
-        /* Разные цвета обводки для кнопок (чтобы не сливались) */
-        .btn-yandex { box-shadow: 0 4px 15px rgba(0,0,0,0.4), 0 0 0 3px #fc3f1d; }
-        .btn-2gis { box-shadow: 0 4px 15px rgba(0,0,0,0.4), 0 0 0 3px #2b9e4b; }
-        .btn-menu { box-shadow: 0 4px 15px rgba(0,0,0,0.4), 0 0 0 3px #ffb347; }
+        @keyframes rgbGlow {
+            0%   { box-shadow: 0 0 12px 2px #ff3333, 0 0 25px 5px #ff3333; }
+            25%  { box-shadow: 0 0 12px 2px #33cc33, 0 0 25px 5px #33cc33; }
+            50%  { box-shadow: 0 0 12px 2px #3366ff, 0 0 25px 5px #3366ff; }
+            75%  { box-shadow: 0 0 12px 2px #ffff33, 0 0 25px 5px #ffff33; }
+            100% { box-shadow: 0 0 12px 2px #ff3333, 0 0 25px 5px #ff3333; }
+        }
 
-        /* --- СНЕГ (CSS) --- */
-        .snow-container {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 1; overflow: hidden;
+        /* --- ЁЛКА С ПОДАРКАМИ (CSS) --- */
+        .tree-section {
+            position: relative;
+            z-index: 8;
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
         }
-        .snowflake {
+        .tree {
+            position: relative;
+            width: 120px;
+            height: 180px;
+        }
+        /* Треугольники ёлки */
+        .tree .tier {
             position: absolute;
-            top: -10px;
-            color: #fff;
-            font-size: 1em;
-            opacity: 0.8;
-            animation-name: fall;
-            animation-timing-function: linear;
-            animation-iteration-count: infinite;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; height: 0;
+            border-left: 60px solid transparent;
+            border-right: 60px solid transparent;
+            border-bottom: 70px solid #1e7a36;
+            filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
         }
-        @keyframes fall { to { transform: translateY(105vh); } }
-
-        /* --- СУГРОБЫ И СНЕГОВИК (внизу) --- */
-        .snow-bottom {
-            position: fixed;
-            bottom: 0; left: 0; width: 100%; height: 160px;
-            pointer-events: none; z-index: 20;
-        }
-        .snow-drift {
+        .tree .tier:nth-child(1) { top: 0; border-bottom-color: #2b9e4b; border-left-width: 45px; border-right-width: 45px; }
+        .tree .tier:nth-child(2) { top: 40px; border-bottom-width: 75px; }
+        .tree .tier:nth-child(3) { top: 85px; border-bottom-width: 80px; border-bottom-color: #1e7a36; }
+        /* Звезда */
+        .tree .star {
             position: absolute;
-            bottom: 0; width: 120%; height: 90px;
-            background: #fff;
-            border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-            left: -10%;
-            box-shadow: 0 -5px 20px rgba(255,255,255,0.4);
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ffd700;
+            font-size: 28px;
+            text-shadow: 0 0 10px #ffd700;
+            z-index: 3;
         }
-        .snow-drift.back {
-            height: 70px; background: #e0e8f0; bottom: 25px;
-            border-radius: 40% 40% 0 0 / 100% 100% 0 0;
-            left: -20%; width: 140%; z-index: -1;
+        /* Подарки */
+        .gifts {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+            z-index: 9;
         }
-        /* Гифка снеговика */
-        .snowman-gif {
+        .gift {
+            width: 30px; height: 30px;
+            border-radius: 4px;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+        }
+        .gift::before {
+            content: '';
             position: absolute;
-            bottom: 50px;
-            right: 30px;
-            width: 70px;
-            height: auto;
-            z-index: 21;
-            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3));
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 6px; height: 100%;
+            background: rgba(255,255,255,0.8);
         }
+        .gift::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 0;
+            transform: translateY(-50%);
+            width: 100%; height: 6px;
+            background: rgba(255,255,255,0.8);
+        }
+        .gift.red { background: #d42e0f; }
+        .gift.blue { background: #3366ff; }
+        .gift.green { background: #2b9e4b; }
 
     </style>
 </head>
 <body>
 
-    <!-- Мишура по бокам -->
-    <div class="tinsel-left"></div>
-    <div class="tinsel-right"></div>
+    <!-- Фон -->
+    <div class="bg-layer"></div>
 
-    <!-- Логотип с леденцами -->
-    <div class="logo-wrap">
-        <img src="logo.png" alt="Gagarin Gastro Bar" class="logo-img">
-        <div class="candy tl"></div>
-        <div class="candy tr"></div>
-        <div class="candy bl"></div>
-        <div class="candy br"></div>
+    <!-- Шапка -->
+    <div class="shapka">
+        <img src="shapka.jpg" alt="Шапка">
     </div>
 
-    <!-- Кнопки -->
-    <div class="content">
-        <a href="https://yandex.ru/maps/org/gagarin_gastro_bar/37738191246/?ll=39.837713%2C59.196859&z=17" target="_blank" class="btn btn-yandex">⭐ Оставить отзыв в Яндекс Картах</a>
-        <a href="https://go.2gis.com/1yZ9V" target="_blank" class="btn btn-2gis">⭐ Оставить отзыв в 2ГИС</a>
-        <a href="https://foodeon.com/venue/gagarin-gastro-bar-slqs" target="_blank" class="btn btn-menu">🍽️ Смотреть онлайн-меню</a>
+    <!-- Основной контент -->
+    <div class="main-content">
+
+        <!-- Блок с лого, мишурой и гирляндой -->
+        <div class="logo-section">
+            <!-- Гирлянда (под мишурой) -->
+            <img src="girlyalnda.gif" alt="Гирлянда" class="girlyanda">
+            <!-- Мишура (над гирляндой, но под лого) -->
+            <img src="mishura.gif" alt="Мишура" class="mishura">
+            <!-- Логотип -->
+            <img src="logo.png" alt="Gagarin Gastro Bar" class="logo-img">
+        </div>
+
+        <!-- Адрес и телефон -->
+        <div class="info-block">
+            <p>📍 ул. Возрождения, 27, Вологда</p>
+            <p>📞 <a href="tel:+78172507450">+7 (8172) 50-74-50</a></p>
+        </div>
+
+        <!-- Кнопки -->
+        <a href="https://foodeon.com/venue/gagarin-gastro-bar-slqs" target="_blank" class="btn">🍽️ Посмотреть меню</a>
+        <a href="https://yandex.ru/maps/org/gagarin_gastro_bar/37738191246/?ll=39.837713%2C59.196859&z=17" target="_blank" class="btn">⭐ Оставить отзыв в Яндекс Картах</a>
+        <a href="https://go.2gis.com/1yZ9V" target="_blank" class="btn">⭐ Оставить отзыв в 2ГИС</a>
+
+        <!-- Ёлка с подарками -->
+        <div class="tree-section">
+            <div class="tree">
+                <div class="tier"></div>
+                <div class="tier"></div>
+                <div class="tier"></div>
+                <div class="star">⭐</div>
+            </div>
+            <div class="gifts">
+                <div class="gift red"></div>
+                <div class="gift blue"></div>
+                <div class="gift green"></div>
+            </div>
+        </div>
+
     </div>
 
-    <!-- Снег -->
-    <div class="snow-container" id="snowContainer"></div>
-
-    <!-- Сугробы и снеговик-гифка -->
-    <div class="snow-bottom">
-        <div class="snow-drift back"></div>
-        <div class="snow-drift"></div>
-        <img src="snowman.gif" alt="Снеговик" class="snowman-gif">
-    </div>
-
-    <script>
-        // --- Генерация снега ---
-        const snowContainer = document.getElementById('snowContainer');
-        const snowflakeCount = 50;
-        for (let i = 0; i < snowflakeCount; i++) {
-            const flake = document.createElement('div');
-            flake.classList.add('snowflake');
-            flake.innerHTML = '❄';
-            flake.style.left = Math.random() * 100 + '%';
-            flake.style.animationDuration = (Math.random() * 3 + 4) + 's';
-            flake.style.animationDelay = Math.random() * 5 + 's';
-            flake.style.fontSize = (Math.random() * 0.8 + 0.5) + 'em';
-            flake.style.opacity = Math.random() * 0.5 + 0.4;
-            snowContainer.appendChild(flake);
-        }
-    </script>
 </body>
 </html>
