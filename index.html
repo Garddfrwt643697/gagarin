@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Gagarin Gastro Bar | Новый Год</title>
+    <style>
+        /* Базовые стили для мобилки */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(180deg, #0b1a2e 0%, #1a2f4a 40%, #2a4a6a 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+            color: #fff;
+        }
+
+        /* --- ГИРЛЯНДА ВОКРУГ ЛОГО (имитация) --- */
+        .garland-wrap {
+            position: relative;
+            margin-top: 40px;
+            display: inline-block;
+        }
+        .garland {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px;
+            height: 30px;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .garland .light {
+            position: absolute;
+            width: 10px;
+            height: 14px;
+            border-radius: 50%;
+            background: #ff3333;
+            box-shadow: 0 0 10px #ff3333, 0 0 20px #ff3333;
+            animation: flicker 1.5s infinite alternate;
+        }
+        /* Позиционируем огоньки по дуге */
+        .garland .light:nth-child(1) { left: 0%; top: 20px; animation-delay: 0s; background: #ff3333; box-shadow: 0 0 10px #ff3333; }
+        .garland .light:nth-child(2) { left: 12%; top: 5px; animation-delay: 0.2s; background: #33cc33; box-shadow: 0 0 10px #33cc33; }
+        .garland .light:nth-child(3) { left: 25%; top: 0px; animation-delay: 0.4s; background: #3366ff; box-shadow: 0 0 10px #3366ff; }
+        .garland .light:nth-child(4) { left: 38%; top: -3px; animation-delay: 0.6s; background: #ffff33; box-shadow: 0 0 10px #ffff33; }
+        .garland .light:nth-child(5) { left: 50%; top: -5px; animation-delay: 0.8s; background: #ff3333; box-shadow: 0 0 10px #ff3333; }
+        .garland .light:nth-child(6) { left: 62%; top: -3px; animation-delay: 1.0s; background: #33cc33; box-shadow: 0 0 10px #33cc33; }
+        .garland .light:nth-child(7) { left: 75%; top: 0px; animation-delay: 1.2s; background: #3366ff; box-shadow: 0 0 10px #3366ff; }
+        .garland .light:nth-child(8) { left: 88%; top: 5px; animation-delay: 1.4s; background: #ffff33; box-shadow: 0 0 10px #ffff33; }
+        .garland .light:nth-child(9) { left: 100%; top: 20px; animation-delay: 1.6s; background: #ff3333; box-shadow: 0 0 10px #ff3333; }
+
+        @keyframes flicker {
+            0% { opacity: 0.4; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1.1); }
+        }
+
+        /* Логотип (заглушка, замени на свой img) */
+        .logo-container {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: 3px solid rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 5;
+            backdrop-filter: blur(5px);
+            margin: 0 auto;
+        }
+        .logo-container img {
+            width: 180px;
+            height: auto;
+            border-radius: 50%;
+        }
+        .logo-placeholder-text {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        /* --- ПАДАЮЩИЙ СНЕГ (CSS) --- */
+        .snow-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: #fff;
+            font-size: 1em;
+            opacity: 0.8;
+            animation-name: fall;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+        @keyframes fall {
+            to { transform: translateY(105vh); }
+        }
+
+        /* --- КОНТЕНТ --- */
+        .content {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+            padding-bottom: 180px; /* место для сугробов */
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px 20px;
+            border-radius: 50px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn:active { transform: scale(0.97); }
+
+        .btn-yandex {
+            background: linear-gradient(135deg, #fc3f1d, #d42e0f);
+        }
+        .btn-2gis {
+            background: linear-gradient(135deg, #2b9e4b, #1e7a36);
+        }
+        .btn-menu {
+            background: linear-gradient(135deg, #ffb347, #e6952b);
+            color: #1a1a1a;
+        }
+
+        /* --- МОДАЛЬНОЕ ОКНО МЕНЮ --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-content {
+            background: #fff;
+            color: #333;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 350px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 20px;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #999;
+            background: none;
+            border: none;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .modal-close:hover { color: #333; }
+        .modal-content h2 {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 20px;
+            color: #1a2f4a;
+        }
+        .menu-category {
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .menu-category h3 {
+            font-size: 16px;
+            color: #d42e0f;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 6px;
+            color: #444;
+        }
+        .menu-item .price {
+            font-weight: bold;
+            color: #1a2f4a;
+            white-space: nowrap;
+            margin-left: 10px;
+        }
+
+        /* --- СУГРОБЫ И СНЕГОВИК (внизу) --- */
+        .snow-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            pointer-events: none;
+            z-index: 20;
+        }
+        .snow-drift {
+            position: absolute;
+            bottom: 0;
+            width: 120%;
+            height: 80px;
+            background: #fff;
+            border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+            left: -10%;
+            box-shadow: 0 -5px 20px rgba(255,255,255,0.3);
+        }
+        .snow-drift.back {
+            height: 60px;
+            background: #e0e8f0;
+            bottom: 20px;
+            border-radius: 40% 40% 0 0 / 100% 100% 0 0;
+            left: -20%;
+            width: 140%;
+            z-index: -1;
+        }
+        /* Снеговик (CSS) */
+        .snowman {
+            position: absolute;
+            bottom: 40px;
+            right: 30px;
+            width: 60px;
+            height: 80px;
+            z-index: 21;
+        }
+        .snowman .head {
+            width: 40px; height: 40px;
+            background: #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 0; left: 10px;
+            border: 2px solid #ccc;
+        }
+        .snowman .body {
+            width: 55px; height: 55px;
+            background: #fff;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 0; left: 2.5px;
+            border: 2px solid #ccc;
+        }
+        .snowman .eye {
+            width: 6px; height: 6px;
+            background: #333;
+            border-radius: 50%;
+            position: absolute;
+            top: 12px;
+        }
+        .snowman .eye.left { left: 10px; }
+        .snowman .eye.right { left: 24px; }
+        .snowman .nose {
+            width: 10px; height: 10px;
+            background: #ff6600;
+            border-radius: 50%;
+            position: absolute;
+            top: 20px; left: 15px;
+        }
+        .snowman .hat {
+            width: 30px; height: 15px;
+            background: #d42e0f;
+            position: absolute;
+            top: -8px; left: 5px;
+            border-radius: 5px 5px 0 0;
+        }
+        .snowman .scarf {
+            width: 30px; height: 8px;
+            background: #2b9e4b;
+            position: absolute;
+            top: 38px; left: 5px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Гирлянда и лого -->
+    <div class="garland-wrap">
+        <div class="garland">
+            <div class="light"></div><div class="light"></div><div class="light"></div>
+            <div class="light"></div><div class="light"></div><div class="light"></div>
+            <div class="light"></div><div class="light"></div><div class="light"></div>
+        </div>
+        <div class="logo-container">
+            <!-- ЗАМЕНИ ЭТОТ БЛОК НА СВОЙ ЛОГОТИП -->
+            <!-- <img src="logo.png" alt="Gagarin"> -->
+            <div class="logo-placeholder-text">GAGARIN<br>GASTRO BAR</div>
+        </div>
+    </div>
+
+    <!-- Контент с кнопками -->
+    <div class="content">
+        <a href="https://yandex.ru/maps/org/gagarin_gastro_bar/37738191246/?ll=39.837713%2C59.196859&z=17" target="_blank" class="btn btn-yandex">⭐ Оставить отзыв в Яндекс Картах</a>
+        <a href="https://go.2gis.com/1yZ9V" target="_blank" class="btn btn-2gis">⭐ Оставить отзыв в 2ГИС</a>
+        <button onclick="openMenu()" class="btn btn-menu">🍽️ Смотреть онлайн-меню</button>
+    </div>
+
+    <!-- Снег -->
+    <div class="snow-container" id="snowContainer"></div>
+
+    <!-- Сугробы и снеговик -->
+    <div class="snow-bottom">
+        <div class="snow-drift back"></div>
+        <div class="snow-drift"></div>
+        <div class="snowman">
+            <div class="hat"></div>
+            <div class="head">
+                <div class="eye left"></div>
+                <div class="eye right"></div>
+                <div class="nose"></div>
+            </div>
+            <div class="body"></div>
+            <div class="scarf"></div>
+        </div>
+    </div>
+
+    <!-- Модальное окно меню -->
+    <div class="modal-overlay" id="menuModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeMenu()">&times;</button>
+            <h2>Меню Gagarin</h2>
+            
+            <div class="menu-category">
+                <h3>Супы</h3>
+                <div class="menu-item"><span>Суп Том ям с рисом</span><span class="price">550 ₽</span></div>
+                <div class="menu-item"><span>Крем-суп из тыквы с креветками</span><span class="price">480 ₽</span></div>
+                <div class="menu-item"><span>Борщ с салом и пампушкой</span><span class="price">470 ₽</span></div>
+            </div>
+
+            <div class="menu-category">
+                <h3>Салаты</h3>
+                <div class="menu-item"><span>Цезарь с курицей</span><span class="price">490 ₽</span></div>
+                <div class="menu-item"><span>Цезарь с креветками</span><span class="price">590 ₽</span></div>
+                <div class="menu-item"><span>Теплый салат с курицей и беконом</span><span class="price">460 ₽</span></div>
+            </div>
+
+            <div class="menu-category">
+                <h3>Горячее</h3>
+                <div class="menu-item"><span>Говяжьи ребра со свежими овощами</span><span class="price">830 ₽</span></div>
+                <div class="menu-item"><span>Хачапури с креветками и соусом том ям</span><span class="price">630 ₽</span></div>
+                <div class="menu-item"><span>Копченый стейк из свиной шеи</span><span class="price">790 ₽</span></div>
+            </div>
+
+            <div class="menu-category">
+                <h3>Пицца</h3>
+                <div class="menu-item"><span>Фирменная с морепродуктами</span><span class="price">840 ₽</span></div>
+                <div class="menu-item"><span>Пепперони</span><span class="price">620 ₽</span></div>
+                <div class="menu-item"><span>Маргарита</span><span class="price">640 ₽</span></div>
+            </div>
+            
+            <div class="menu-category">
+                <h3>Десерты</h3>
+                <div class="menu-item"><span>Медовик с халвой</span><span class="price">440 ₽</span></div>
+                <div class="menu-item"><span>Меренговый рулет с нектарином</span><span class="price">390 ₽</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Генерация снега ---
+        const snowContainer = document.getElementById('snowContainer');
+        const snowflakeCount = 50; // Количество снежинок
+
+        for (let i = 0; i < snowflakeCount; i++) {
+            const flake = document.createElement('div');
+            flake.classList.add('snowflake');
+            flake.innerHTML = '❄'; // Символ снежинки
+            flake.style.left = Math.random() * 100 + '%';
+            flake.style.animationDuration = (Math.random() * 3 + 4) + 's'; // от 4 до 7 секунд
+            flake.style.animationDelay = Math.random() * 5 + 's';
+            flake.style.fontSize = (Math.random() * 0.8 + 0.5) + 'em';
+            flake.style.opacity = Math.random() * 0.5 + 0.4;
+            snowContainer.appendChild(flake);
+        }
+
+        // --- Модальное окно ---
+        const modal = document.getElementById('menuModal');
+
+        function openMenu() {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Блокируем скролл фона
+        }
+
+        function closeMenu() {
+            modal.classList.remove('active');
+            document.body.style.overflow = ''; // Возвращаем скролл
+        }
+
+        // Закрытие по клику вне окна
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeMenu();
+            }
+        });
+    </script>
+</body>
+</html>
